@@ -2,6 +2,7 @@ import tkinter as tk
 from random import shuffle
 from tkinter.messagebox import showinfo, showerror
 
+
 colors = {
     0: 'white',
     1: 'blue',
