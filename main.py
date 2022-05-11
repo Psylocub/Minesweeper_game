@@ -16,6 +16,7 @@ colors = {
 }
 
 class MyButton(tk.Button):
+    """Changed tkinter button properties"""
     def __init__(self, master, x, y, number=0, *args, **kwargs):
         super(MyButton, self).__init__(master, width=3, font='Calibri 15 bold', *args, **kwargs)
         self.x = x
@@ -30,6 +31,7 @@ class MyButton(tk.Button):
 
 
 class MineSweeper:
+    """Describe game field"""
     window = tk.Tk()
     ROW = 7
     COLUMN = 10
@@ -38,6 +40,7 @@ class MineSweeper:
     IS_FIRST_CLICK = True
 
     def __init__(self):
+        """initialize all game parts """
         self.buttons = []
         for i in range(MineSweeper.ROW + 2):
             temp = []
@@ -64,13 +67,11 @@ class MineSweeper:
 
         if MineSweeper.IS_GAME_OVER:
             return
-
         if MineSweeper.IS_FIRST_CLICK:
             self.insert_mines(clicked_button.number)
             self.count_mines_in_buttons()
             self.print_buttons()
             MineSweeper.IS_FIRST_CLICK = False
-
         if clicked_button.is_mine:
             clicked_button.config(text="*", background="red", disabledforeground='black')
             clicked_button.is_open = True
@@ -81,7 +82,6 @@ class MineSweeper:
                     btn = self.buttons[i][j]
                     if btn.is_mine:
                         btn['text'] = '*'
-
         else:
             color = colors.get(clicked_button.count_bomb, 'black')
             if clicked_button.count_bomb:
@@ -93,9 +93,9 @@ class MineSweeper:
         clicked_button.config(relief=tk.SUNKEN)
 
     def breadth_first_search(self, btn: MyButton):
+
         queue = [btn]
         while queue:
-
             cur_btn = queue.pop()
             color = colors.get(cur_btn.count_bomb, 'black')
             if cur_btn.count_bomb:
@@ -110,9 +110,6 @@ class MineSweeper:
                 x, y = cur_btn.x, cur_btn.y
                 for dx in [-1, 0, 1]:
                     for dy in [-1, 0, 1]:
-                        # if not abs(dx - dy) == 1:
-                        #     continue
-
                         next_btn = self.buttons[x + dx][y + dy]
                         if not next_btn.is_open and 1 <= next_btn.x <= MineSweeper.ROW and \
                                 1 <= next_btn.y <= MineSweeper.COLUMN and next_btn not in queue:
@@ -159,13 +156,11 @@ class MineSweeper:
 
         menubar = tk.Menu(self.window)
         self.window.config(menu=menubar)
-
         settings_menu = tk.Menu(menubar, tearoff=0)
         settings_menu.add_command(label='Play', command=self.reload)
         settings_menu.add_command(label='Settings', command=self.create_settings_win)
         settings_menu.add_command(label='Exit', command=self.window.destroy)
         menubar.add_cascade(label='Game', menu=settings_menu)
-
         count = 1
         for i in range(1, MineSweeper.ROW + 1):
             for j in range(1, MineSweeper.COLUMN + 1):
@@ -191,8 +186,8 @@ class MineSweeper:
                     btn.config(text=btn.count_bomb, fg=color)
 
     def start(self):
+        """Starts the game"""
         self.create_widgets()
-        # self.open_all_buttons()
         MineSweeper.window.mainloop()
 
     def print_buttons(self):
@@ -236,5 +231,3 @@ class MineSweeper:
 
 game = MineSweeper()
 game.start()
-
-
